@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -83,5 +84,10 @@ public class GameManager : MonoBehaviour
         topCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
         bottomCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
 
+    }
+
+    public static void StartGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
