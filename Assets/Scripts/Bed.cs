@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Bed : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class Bed : MonoBehaviour
 
     private void Update()
     {
-        Vector3 mouseLocation = _cam.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 clampedLocation = new Vector3(mouseLocation.x, Math.Clamp(mouseLocation.y, -5.0f, -1.5f), 0);
+        float screenMinY = _cam.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+        
+        Vector3 mouseLocation = _cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3 clampedLocation = new Vector3(mouseLocation.x, Math.Clamp(mouseLocation.y, screenMinY, screenMinY / 3.0f), 0);
         
         transform.position = clampedLocation;
     }
