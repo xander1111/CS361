@@ -15,6 +15,8 @@ public class Bed : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.IsPaused) return;
+        
         float screenMinY = _cam.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
         
         Vector3 mouseLocation = _cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());

@@ -9,15 +9,18 @@ public class Monkey : MonoBehaviour
     private Vector3 _moveDirection;
     private bool _canHitBed = true;
     private const float Pi = (float) Math.PI;
+    private GameplayUIManager _ui;
 
     private void Start()
     {
         float moveAngle = Random.Range(0.0f, Pi);
         _moveDirection = new Vector2(math.cos(moveAngle), math.sin(moveAngle)) * _moveSpeed;
+        _ui = FindObjectOfType<GameplayUIManager>();
     }
     
-    private void FixedUpdate()
+    private void Update()
     {
+        if (GameManager.Instance.IsPaused) return;
         transform.position += _moveDirection * Time.deltaTime;
     }
 
@@ -44,7 +47,7 @@ public class Monkey : MonoBehaviour
                 newMoveDirection.Normalize();
                 _moveDirection = newMoveDirection * _moveSpeed;
 
-                GameManager.Instance.AddScore();
+                _ui.AddScore();
                 
                 break;
         }

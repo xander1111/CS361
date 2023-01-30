@@ -5,18 +5,16 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    private int _score;
-    private TextMeshProUGUI _scoreText;
     private Camera _cam;
+    private bool _isPaused;
 
-    private int Score
+    public bool IsPaused
     {
-        get => _score;
+        get => _isPaused;
         set
         {
-            _score = value;
-            if (!_scoreText) _scoreText = GameObject.FindWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
-            _scoreText.text = "Score: " + _score.ToString("N0");
+            _isPaused = value;
+            Time.timeScale = _isPaused ? 0f : 1f;
         }
     }
 
@@ -46,12 +44,7 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0;
     }
-
-    public void AddScore()
-    {
-        Score += 100;
-    }
-
+    
     public void GenerateEdgeColliders()
     {
         Vector2 lowerCorner = _cam.ViewportToWorldPoint(new Vector3(0, 0, 0));
