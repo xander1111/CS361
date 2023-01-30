@@ -83,4 +83,14 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    public static void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public static void QuitGame()
+    {
+        Application.Quit();
+    }
 }
