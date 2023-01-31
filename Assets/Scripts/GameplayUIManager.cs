@@ -24,7 +24,6 @@ public class GameplayUIManager : MonoBehaviour
         set
         {
             _score = value;
-            if (!scoreText) scoreText = GameObject.FindWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
             scoreText.text = "Score: " + _score.ToString("N0");
         }
     }
