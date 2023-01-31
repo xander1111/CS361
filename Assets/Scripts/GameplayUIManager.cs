@@ -59,4 +59,10 @@ public class GameplayUIManager : MonoBehaviour
         quitButton.SetActive(!quitButton.activeSelf);
         continueButton.SetActive(!continueButton.activeSelf);
     }
+
+    public void SaveScore()
+    {
+        // TODO get player's name
+        GameManager.SaveScoreToFile(_score, "");
+    }
 }

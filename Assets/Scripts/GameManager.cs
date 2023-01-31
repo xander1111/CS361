@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEngine;
 using TMPro;
@@ -88,8 +87,8 @@ public class GameManager : MonoBehaviour
         if (File.Exists(saveFile)) SceneManager.LoadScene(1);
         else
         {
-            // TODO add data to file
-            File.WriteAllText(saveFile, "");
+            string jsonData = JsonUtility.ToJson(new SaveData { score = 0, name = "" });
+            File.WriteAllText(saveFile, jsonData);
 
             SceneManager.LoadScene(3);
         }
@@ -108,5 +107,12 @@ public class GameManager : MonoBehaviour
     public static void QuitGame()
     {
         Application.Quit();
+    }
+
+    public static void SaveScoreToFile(int score, string name)
+    {
+        string saveFile = Application.persistentDataPath + "/save.json";
+        string jsonData = JsonUtility.ToJson(new SaveData { score = score, name = name });
+        File.WriteAllText(saveFile, jsonData);
     }
 }
