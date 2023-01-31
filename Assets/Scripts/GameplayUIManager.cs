@@ -29,6 +29,9 @@ public class GameplayUIManager : MonoBehaviour
     {
         menuControls.Enable();
         menuControls.started += _ => PauseGame();
+
+        GameManager.Instance.GenerateEdgeColliders();
+        GameManager.Instance.IsPaused = false;
     }
 
     private void OnDisable()

@@ -9,8 +9,6 @@ public class Bed : MonoBehaviour
     private void Awake()
     {
         _cam = Camera.main;
-
-        GameManager.Instance.GenerateEdgeColliders();
     }
 
     private void Update()

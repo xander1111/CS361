@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -5,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    private Camera _cam;
     private bool _isPaused;
 
     public bool IsPaused
@@ -35,7 +36,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        _cam = Camera.main;
     }
 
     public void EndGame()
@@ -48,8 +48,10 @@ public class GameManager : MonoBehaviour
     
     public void GenerateEdgeColliders()
     {
-        Vector2 lowerCorner = _cam.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector2 upperCorner = _cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
+        Camera cam = Camera.main;
+        
+        Vector2 lowerCorner = cam.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector2 upperCorner = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
         float screenWidth = upperCorner.x - lowerCorner.x;
         float screenHeight = upperCorner.y - lowerCorner.y;
 
@@ -82,7 +84,15 @@ public class GameManager : MonoBehaviour
 
     public static void StartGame()
     {
-        SceneManager.LoadScene(1);
+        string saveFile = Application.persistentDataPath + "/save.json";
+        if (File.Exists(saveFile)) SceneManager.LoadScene(1);
+        else
+        {
+            // TODO add data to file
+            File.WriteAllText(saveFile, "");
+
+            SceneManager.LoadScene(3);
+        }
     }
 
     public static void LoadMainMenu()
