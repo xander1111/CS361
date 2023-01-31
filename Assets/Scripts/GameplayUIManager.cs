@@ -9,19 +9,23 @@ public class GameplayUIManager : MonoBehaviour
     public GameObject quitButton;
     public GameObject continueButton;
     public GameObject quitPanel;
+    public GameObject gameOverScreen;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI finalScoreText;
 
     private int _score;
-    private TextMeshProUGUI _scoreText;
     private bool _quitPanelOpen;
     
+
     private int Score
     {
         get => _score;
         set
         {
             _score = value;
-            if (!_scoreText) _scoreText = GameObject.FindWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
-            _scoreText.text = "Score: " + _score.ToString("N0");
+            if (!scoreText) scoreText = GameObject.FindWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
+            scoreText.text = "Score: " + _score.ToString("N0");
         }
     }
     
@@ -32,6 +36,7 @@ public class GameplayUIManager : MonoBehaviour
 
         GameManager.Instance.GenerateEdgeColliders();
         GameManager.Instance.IsPaused = false;
+        GameManager.Instance.isGameOver = false;
     }
 
     private void OnDisable()
@@ -46,7 +51,7 @@ public class GameplayUIManager : MonoBehaviour
 
     public void PauseGame()
     {
-        if (_quitPanelOpen) return;
+        if (_quitPanelOpen || GameManager.Instance.isGameOver) return;
         GameManager.Instance.IsPaused = !GameManager.Instance.IsPaused;
         pauseScreen.SetActive(!pauseScreen.activeSelf);
     }
@@ -60,9 +65,20 @@ public class GameplayUIManager : MonoBehaviour
         continueButton.SetActive(!continueButton.activeSelf);
     }
 
-    public void SaveScore()
+    public void EndGame()
     {
-        // TODO get player's name
-        GameManager.SaveScoreToFile(_score, "");
+        GameManager.Instance.IsPaused = true;
+        GameManager.Instance.isGameOver = true;
+
+        scoreText.enabled = false;
+        finalScoreText.text = "Final Score: " + Score;
+        
+        gameOverScreen.SetActive(true);
+    }
+
+    public void SaveAndQuit()
+    {
+        GameManager.SaveScoreToFile(Score, nameText.text);
+        GameManager.LoadMainMenu();
     }
 }

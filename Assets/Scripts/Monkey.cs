@@ -36,7 +36,7 @@ public class Monkey : MonoBehaviour
                 _moveDirection.y *= -1;
                 break;
             case "EdgeCollider_Bottom":
-                GameManager.Instance.EndGame();
+                FindObjectOfType<GameplayUIManager>().EndGame();
                 break;
             case "BedCollider":
                 if (!_canHitBed) break;

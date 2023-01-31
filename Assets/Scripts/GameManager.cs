@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
     private bool _isPaused;
+    public bool isGameOver;
 
     public bool IsPaused
     {
@@ -37,14 +38,6 @@ public class GameManager : MonoBehaviour
         _instance = this;
     }
 
-    public void EndGame()
-    {
-        TextMeshProUGUI gameOverText = GameObject.FindWithTag("EndScreen").GetComponent<TextMeshProUGUI>();
-        gameOverText.enabled = true;
-
-        Time.timeScale = 0;
-    }
-    
     public void GenerateEdgeColliders()
     {
         Camera cam = Camera.main;
