@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
             if (!_instance)
             {
                 _instance = new GameObject("GameManager").AddComponent<GameManager>();
+                DontDestroyOnLoad(_instance);
             }
 
             return _instance;
@@ -87,6 +88,11 @@ public class GameManager : MonoBehaviour
     public static void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public static void LoadLeaderboards()
+    {
+        SceneManager.LoadScene(2);
     }
 
     public static void QuitGame()
