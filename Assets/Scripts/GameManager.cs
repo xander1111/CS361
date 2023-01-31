@@ -1,6 +1,5 @@
 using System.IO;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -107,5 +106,16 @@ public class GameManager : MonoBehaviour
         string saveFile = Application.persistentDataPath + "/save.json";
         string jsonData = JsonUtility.ToJson(new SaveData { score = score, name = name });
         File.WriteAllText(saveFile, jsonData);
+    }
+
+    public static (int, string) ReadScoreFromFile()
+    {
+        string saveFile = Application.persistentDataPath + "/save.json";
+        if (!File.Exists(saveFile)) return (-1, "");
+        
+        string jsonData = File.ReadAllText(saveFile);
+        SaveData data = JsonUtility.FromJson<SaveData>(jsonData);
+
+        return (data.score, data.name);
     }
 }
