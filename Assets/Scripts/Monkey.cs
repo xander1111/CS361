@@ -13,7 +13,7 @@ public class Monkey : MonoBehaviour
 
     private void Start()
     {
-        float moveAngle = Random.Range(0.0f, Pi);
+        float moveAngle = Random.Range(Pi / 5.0f, (4 * Pi) / 5.0f);
         _moveDirection = new Vector2(math.cos(moveAngle), math.sin(moveAngle)) * _moveSpeed;
         _ui = FindObjectOfType<GameplayUIManager>();
     }
