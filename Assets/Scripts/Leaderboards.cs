@@ -43,16 +43,16 @@ public class Leaderboards : MonoBehaviour
 
     private IEnumerator GenerateScore(int pos)
     {
-        UnityWebRequest www = UnityWebRequest.Get("http://localhost:3000/highScore/" + pos);
-        yield return www.SendWebRequest();
+        UnityWebRequest getScore = UnityWebRequest.Get("http://localhost:3000/highScore/" + pos);
+        yield return getScore.SendWebRequest();
         
-        if (www.result != UnityWebRequest.Result.Success && www.responseCode != 409) Debug.Log(www.error);
+        if (getScore.result != UnityWebRequest.Result.Success && getScore.responseCode != 409) Debug.Log(getScore.error);
         else
         {
-            if (www.responseCode != 409) // Code 409 returned when no score at the given position exists
+            if (getScore.responseCode != 409) // Code 409 returned when no score at the given position exists
             {
                 Score score = Instantiate(scorePrefab).GetComponent<Score>();
-                score.LoadFromJson(www.downloadHandler.text);
+                score.LoadFromJson(getScore.downloadHandler.text);
                 score.Placement = pos;
                 score.transform.SetParent(content.transform, false);
                 score.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, (pos - 1) * -50 - 25);
