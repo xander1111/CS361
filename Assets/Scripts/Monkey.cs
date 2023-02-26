@@ -10,7 +10,11 @@ public class Monkey : MonoBehaviour
     private bool _canHitBed = true;
     private const float Pi = (float) Math.PI;
     private GameplayUIManager _ui;
+    private int _bedHitCount;
 
+    public float speedModifier;
+    public int speedChangeRate;  // Base number for bounces between speed changes, higher is less often
+    
     private void Start()
     {
         float moveAngle = Random.Range(Pi / 5.0f, (4 * Pi) / 5.0f);
@@ -39,17 +43,28 @@ public class Monkey : MonoBehaviour
                 FindObjectOfType<GameplayUIManager>().EndGame();
                 break;
             case "BedCollider":
-                if (!_canHitBed) break;
-                _canHitBed = false;
-                
-                // Use y value to change possible angle range
-                Vector3 newMoveDirection = new Vector3(transform.position.x - other.transform.position.x, 1, 0);
-                newMoveDirection.Normalize();
-                _moveDirection = newMoveDirection * _moveSpeed;
-
+                BounceOffBed(other);
                 _ui.AddScore();
-                
                 break;
         }
+    }
+
+    private void BounceOffBed(Collider2D bed)
+    {
+        if (!_canHitBed) return;
+        _canHitBed = false;
+        
+        // Use y value to change possible angle range
+        Vector3 newMoveDirection = new Vector3(transform.position.x - bed.transform.position.x, 1, 0);
+        newMoveDirection.Normalize();
+
+        _bedHitCount++;
+        if (_bedHitCount >= speedChangeRate)
+        {
+            _moveSpeed += speedModifier;
+            speedChangeRate = speedChangeRate * 3 / 2;
+        }
+
+        _moveDirection = newMoveDirection * _moveSpeed;
     }
 }
