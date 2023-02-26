@@ -1,5 +1,7 @@
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -117,5 +119,16 @@ public class GameManager : MonoBehaviour
         SaveData data = JsonUtility.FromJson<SaveData>(jsonData);
 
         return (data.score, data.name);
+    }
+
+    public static IEnumerator PublishScore(int score, string name)
+    {
+        string jsonData = $"{{\"name\": \"{name}\", \"score\": {score}}}";
+        
+        UnityWebRequest postScore = UnityWebRequest.Post("http://localhost:3000/highScore", jsonData, "application/json");
+        yield return postScore.SendWebRequest();
+
+        if (postScore.result != UnityWebRequest.Result.Success) Debug.Log(postScore.error);
+        else Debug.Log("Score posted");
     }
 }

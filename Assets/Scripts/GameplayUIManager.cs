@@ -78,6 +78,7 @@ public class GameplayUIManager : MonoBehaviour
     public void SaveAndQuit()
     {
         GameManager.SaveScoreToFile(Score, nameText.text);
+        StartCoroutine(GameManager.PublishScore(Score, nameText.text));
         GameManager.LoadMainMenu();
     }
 }
