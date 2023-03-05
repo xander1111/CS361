@@ -11,10 +11,12 @@ public class GameplayUIManager : MonoBehaviour
     public GameObject quitPanel;
     public GameObject gameOverScreen;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI livesText;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI finalScoreText;
 
     private int _score;
+    private int _lives = 1;
     private bool _quitPanelOpen;
     
 
@@ -25,6 +27,17 @@ public class GameplayUIManager : MonoBehaviour
         {
             _score = value;
             scoreText.text = "Score: " + _score.ToString("N0");
+        }
+    }
+
+    private int Lives
+    {
+        get => _lives;
+        set
+        {
+            if (value > 3) value = 3;
+            _lives = value;
+            livesText.text = "Lives: " + _lives.ToString("N0");
         }
     }
     
@@ -46,6 +59,11 @@ public class GameplayUIManager : MonoBehaviour
     public void AddScore()
     {
         Score += 100;
+    }
+
+    public void AddLife()
+    {
+        Lives++;
     }
 
     public void PauseGame()

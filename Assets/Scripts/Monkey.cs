@@ -43,7 +43,7 @@ public class Monkey : MonoBehaviour
                 _moveDirection.y *= -1;
                 break;
             case "EdgeCollider_Bottom":
-                FindObjectOfType<GameplayUIManager>().EndGame();
+                _ui.EndGame();
                 break;
             case "BedCollider":
                 BounceOffBed(other);
