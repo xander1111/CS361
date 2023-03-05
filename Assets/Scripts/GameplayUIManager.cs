@@ -65,6 +65,12 @@ public class GameplayUIManager : MonoBehaviour
     {
         Lives++;
     }
+    
+    public void RemoveLife()
+    {
+        if (--Lives < 1) EndGame();
+        Score -= 50;  // Score penalty for losing a life
+    }
 
     public void PauseGame()
     {
@@ -82,7 +88,7 @@ public class GameplayUIManager : MonoBehaviour
         continueButton.SetActive(!continueButton.activeSelf);
     }
 
-    public void EndGame()
+    private void EndGame()
     {
         GameManager.Instance.IsPaused = true;
         GameManager.Instance.isGameOver = true;

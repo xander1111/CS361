@@ -43,9 +43,15 @@ public class Monkey : MonoBehaviour
                 _moveDirection.y *= -1;
                 break;
             case "EdgeCollider_Bottom":
-                _ui.EndGame();
+                _canHitBed = false;
+                _moveDirection.y *= -1;
+                
+                _ui.RemoveLife();
                 break;
             case "BedCollider":
+                if (!_canHitBed) break;
+                _canHitBed = false;
+                
                 BounceOffBed(other);
                 _ui.AddScore();
                 break;
@@ -54,9 +60,6 @@ public class Monkey : MonoBehaviour
 
     private void BounceOffBed(Collider2D bed)
     {
-        if (!_canHitBed) return;
-        _canHitBed = false;
-        
         // Use y value to change possible angle range
         Vector2 newMoveDirection = new Vector2(transform.position.x - bed.transform.position.x, 1);
         newMoveDirection.Normalize();
