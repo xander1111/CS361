@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     private bool _isPaused;
     public static Camera mainCam;
+    public static float minVisibleX;
+    public static float minVisibleY;
+    public static float maxVisibleX;
+    public static float maxVisibleY;
     public bool isGameOver;
 
     public bool IsPaused
@@ -28,7 +32,7 @@ public class GameManager : MonoBehaviour
             if (!_instance)
             {
                 _instance = new GameObject("GameManager").AddComponent<GameManager>();
-                mainCam = Camera.main;
+                SetCameraVariables();
                 DontDestroyOnLoad(_instance);
             }
 
@@ -44,15 +48,26 @@ public class GameManager : MonoBehaviour
 
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        SetCameraVariables();
+    }
+
+    private static void SetCameraVariables()
+    {
         mainCam = Camera.main;
+        
+        Vector3 lowerCorner = mainCam.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 upperCorner = mainCam.ViewportToWorldPoint(new Vector3(1, 1, 0));
+
+        minVisibleX = lowerCorner.x;
+        minVisibleY = lowerCorner.y;
+        maxVisibleX = upperCorner.x;
+        maxVisibleY = upperCorner.y;
     }
 
     public void GenerateEdgeColliders()
     {
-        Vector2 lowerCorner = mainCam.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector2 upperCorner = mainCam.ViewportToWorldPoint(new Vector3(1, 1, 0));
-        float screenWidth = upperCorner.x - lowerCorner.x;
-        float screenHeight = upperCorner.y - lowerCorner.y;
+        float screenWidth = maxVisibleX - minVisibleX;
+        float screenHeight = maxVisibleY - minVisibleY;
 
         GameObject sideCollider1 = new GameObject("CameraEdgeCollier_Side1");
         GameObject sideCollider2 = new GameObject("CameraEdgeCollier_Side2");
@@ -69,16 +84,15 @@ public class GameManager : MonoBehaviour
         topCollider.tag = "EdgeCollider_Top";
         bottomCollider.tag = "EdgeCollider_Bottom";
 
-        sideCollider1.transform.position = new Vector3(upperCorner.x + 1, 0, 0);
-        sideCollider2.transform.position = new Vector3(lowerCorner.x - 1, 0, 0);
-        topCollider.transform.position = new Vector3(0, upperCorner.y + 1, 0);
-        bottomCollider.transform.position = new Vector3(0, lowerCorner.y - 1, 0);
+        sideCollider1.transform.position = new Vector3(maxVisibleX + 1, 0, 0);
+        sideCollider2.transform.position = new Vector3(minVisibleX - 1, 0, 0);
+        topCollider.transform.position = new Vector3(0, maxVisibleY + 1, 0);
+        bottomCollider.transform.position = new Vector3(0, minVisibleY - 1, 0);
 
         sideCollider1.transform.localScale = new Vector3(2, screenHeight + 1, 1);
         sideCollider2.transform.localScale = new Vector3(2, screenHeight + 1, 1);
         topCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
         bottomCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
-
     }
 
     public static void StartGame()
