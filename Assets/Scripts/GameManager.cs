@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
     private bool _isPaused;
+    public static Camera mainCam;
     public bool isGameOver;
 
     public bool IsPaused
@@ -27,24 +28,29 @@ public class GameManager : MonoBehaviour
             if (!_instance)
             {
                 _instance = new GameObject("GameManager").AddComponent<GameManager>();
+                mainCam = Camera.main;
                 DontDestroyOnLoad(_instance);
             }
 
             return _instance;
         }
     }
-    
+
     private void Awake()
     {
         _instance = this;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        mainCam = Camera.main;
     }
 
     public void GenerateEdgeColliders()
     {
-        Camera cam = Camera.main;
-        
-        Vector2 lowerCorner = cam.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector2 upperCorner = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
+        Vector2 lowerCorner = mainCam.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector2 upperCorner = mainCam.ViewportToWorldPoint(new Vector3(1, 1, 0));
         float screenWidth = upperCorner.x - lowerCorner.x;
         float screenHeight = upperCorner.y - lowerCorner.y;
 
