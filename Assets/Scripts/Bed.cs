@@ -19,8 +19,10 @@ public class Bed : MonoBehaviour
         if (GameManager.Instance.IsPaused) return;
 
         Vector3 mouseLocation = GameManager.mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector3 clampedLocation = new Vector3(mouseLocation.x, Math.Clamp(mouseLocation.y, GameManager.minVisibleY, _maxY), 0);
+        float clampedX = Math.Clamp(mouseLocation.x, GameManager.minVisibleX, GameManager.maxVisibleX);
+        float clampedY = Math.Clamp(mouseLocation.y, GameManager.minVisibleY, _maxY);
+        Vector2 newLocation = new Vector2(clampedX, clampedY);
 
-        _rigidbody.MovePosition(clampedLocation);
+        _rigidbody.MovePosition(newLocation);
     }
 }

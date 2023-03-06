@@ -68,30 +68,41 @@ public class GameManager : MonoBehaviour
     {
         float screenWidth = maxVisibleX - minVisibleX;
         float screenHeight = maxVisibleY - minVisibleY;
-
-        GameObject sideCollider1 = new GameObject("CameraEdgeCollier_Side1");
-        GameObject sideCollider2 = new GameObject("CameraEdgeCollier_Side2");
-        GameObject topCollider = new GameObject("CameraEdgeCollier_Top");
-        GameObject bottomCollider = new GameObject("CameraEdgeCollier_Bottom");
         
-        sideCollider1.AddComponent<BoxCollider2D>().isTrigger = true;
-        sideCollider2.AddComponent<BoxCollider2D>().isTrigger = true;
+        GenerateSideColliders(screenHeight);
+        GenerateTopCollider(screenWidth);
+        GenerateBottomCollider(screenWidth);
+    }
+
+    private static void GenerateSideColliders(float screenHeight)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject sideCollider = new GameObject("CameraEdgeCollier_Side" + i);
+            sideCollider.AddComponent<BoxCollider2D>().isTrigger = true;
+            sideCollider.tag = "EdgeCollider_Sides";
+
+            float posX = i == 0 ? minVisibleX - 1 : maxVisibleX + 1;
+            sideCollider.transform.position = new Vector3(posX, 0, 0);
+            sideCollider.transform.localScale = new Vector3(2, screenHeight + 1, 1);
+        }
+    }
+
+    private static void GenerateTopCollider(float screenWidth)
+    {
+        GameObject topCollider = new GameObject("CameraEdgeCollier_Top");
         topCollider.AddComponent<BoxCollider2D>().isTrigger = true;
-        bottomCollider.AddComponent<BoxCollider2D>().isTrigger = true;
-
-        sideCollider1.tag = "EdgeCollider_Sides";
-        sideCollider2.tag = "EdgeCollider_Sides";
         topCollider.tag = "EdgeCollider_Top";
-        bottomCollider.tag = "EdgeCollider_Bottom";
-
-        sideCollider1.transform.position = new Vector3(maxVisibleX + 1, 0, 0);
-        sideCollider2.transform.position = new Vector3(minVisibleX - 1, 0, 0);
         topCollider.transform.position = new Vector3(0, maxVisibleY + 1, 0);
-        bottomCollider.transform.position = new Vector3(0, minVisibleY - 1, 0);
-
-        sideCollider1.transform.localScale = new Vector3(2, screenHeight + 1, 1);
-        sideCollider2.transform.localScale = new Vector3(2, screenHeight + 1, 1);
         topCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
+    }
+
+    private static void GenerateBottomCollider(float screenWidth)
+    {
+        GameObject bottomCollider = new GameObject("CameraEdgeCollier_Bottom");
+        bottomCollider.AddComponent<BoxCollider2D>().isTrigger = true;
+        bottomCollider.tag = "EdgeCollider_Bottom";
+        bottomCollider.transform.position = new Vector3(0, minVisibleY - 1, 0);
         bottomCollider.transform.localScale = new Vector3(screenWidth + 1, 2, 1);
     }
 
