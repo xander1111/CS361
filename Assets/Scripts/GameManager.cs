@@ -43,12 +43,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        SetCameraVariables();
+        SceneManager.sceneLoaded += (_, _) => SetCameraVariables();
     }
 
     private static void SetCameraVariables()
@@ -110,7 +105,7 @@ public class GameManager : MonoBehaviour
     {
         string saveFile = Application.persistentDataPath + "/save.json";
         if (File.Exists(saveFile)) SceneManager.LoadScene(1);
-        else
+        else  // If no save file exists, the user hasn't played the game before and should be shown the tutorial
         {
             string jsonData = JsonUtility.ToJson(new SaveData { score = 0, name = "" });
             File.WriteAllText(saveFile, jsonData);
@@ -158,7 +153,7 @@ public class GameManager : MonoBehaviour
         
         UnityWebRequest postScore = UnityWebRequest.Post("http://localhost:3000/highScore", jsonData, "application/json");
         yield return postScore.SendWebRequest();
-
+        
         if (postScore.result != UnityWebRequest.Result.Success) Debug.Log(postScore.error);
         else Debug.Log("Score posted");
     }

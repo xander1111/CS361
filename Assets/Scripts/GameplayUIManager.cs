@@ -37,7 +37,7 @@ public class GameplayUIManager : MonoBehaviour
         {
             if (value > 3) value = 3;
             _lives = value;
-            livesText.text = "Lives: " + _lives.ToString("N0");
+            livesText.text = "Lives: " + _lives;
         }
     }
     
@@ -94,6 +94,7 @@ public class GameplayUIManager : MonoBehaviour
         GameManager.Instance.isGameOver = true;
 
         scoreText.enabled = false;
+        livesText.enabled = false;
         finalScoreText.text = "Final Score: " + Score;
         
         gameOverScreen.SetActive(true);

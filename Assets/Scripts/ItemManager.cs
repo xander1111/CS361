@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    private static float _itemAppearTimeMin = 60f;
-    private static float _itemAppearTimeMax = 90f;
+    private const float ItemAppearTimeMin = 60f;
+    private const float ItemAppearTimeMax = 90f;
     private static System.Random _random;
 
     public List<Item> items;
@@ -27,7 +27,7 @@ public class ItemManager : MonoBehaviour
 
             foreach (Item item in itemOrder)
             {
-                float waitTime = Random.Range(_itemAppearTimeMin, _itemAppearTimeMax);
+                float waitTime = Random.Range(ItemAppearTimeMin, ItemAppearTimeMax);
                 yield return new WaitForSeconds(waitTime);
                 
                 Vector2 spawnLocation = new Vector2(Random.Range(GameManager.minVisibleX, GameManager.maxVisibleX), 1);

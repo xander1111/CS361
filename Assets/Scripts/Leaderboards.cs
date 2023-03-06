@@ -18,11 +18,11 @@ public class Leaderboards : MonoBehaviour
 
     private void ReadUserScoreFromFile()
     {
-        var (score, scoreName) = GameManager.ReadScoreFromFile();
+        (int score, string scoreName) = GameManager.ReadScoreFromFile();
 
         if (score != -1)
         {
-            userScore.text = score.ToString();
+            userScore.text = score.ToString("N0");
             userName.text = scoreName;
         }
         else
@@ -46,7 +46,10 @@ public class Leaderboards : MonoBehaviour
         UnityWebRequest getScore = UnityWebRequest.Get("http://localhost:3000/highScore/" + pos);
         yield return getScore.SendWebRequest();
         
-        if (getScore.result != UnityWebRequest.Result.Success && getScore.responseCode != 409) Debug.Log(getScore.error);
+        if (getScore.result != UnityWebRequest.Result.Success && getScore.responseCode != 409)
+        {
+            Debug.Log(getScore.error);
+        }
         else
         {
             if (getScore.responseCode != 409) // Code 409 returned when no score at the given position exists

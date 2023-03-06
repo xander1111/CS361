@@ -7,7 +7,7 @@ public class Score : MonoBehaviour
 {
     private int _placement;
     
-    public new string name;  // Shadows Object.name, required though as this is what the microservice expects and returns
+    public new string name;  // Shadows Object.name, required though as this is what the microservice returns
     public int score;
 
     public TextMeshProUGUI nameText;
@@ -20,7 +20,7 @@ public class Score : MonoBehaviour
         set
         {
             _placement = value;
-            placementText.text = "#" + _placement.ToString();
+            placementText.text = "#" + _placement;
         }
     }
     
@@ -29,6 +29,6 @@ public class Score : MonoBehaviour
         JsonUtility.FromJsonOverwrite(jsonData, this);
 
         nameText.text = name;
-        scoreText.text = score.ToString();
+        scoreText.text = score.ToString("N0");
     }
 }
