@@ -8,9 +8,11 @@ public abstract class Item : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position += new Vector3(0, -1 * FallSpeed, 0) * Time.deltaTime;
+        Transform tsf = transform;
+        Vector3 pos = tsf.position;
+        pos += new Vector3(0, -1 * FallSpeed, 0) * Time.deltaTime;
 
-        float minVisibleY = transform.position.y - transform.lossyScale.y / 2;
+        float minVisibleY = pos.y - tsf.lossyScale.y / 2;
         if (minVisibleY < GameManager.minVisibleY) Destroy(gameObject);
     }
 

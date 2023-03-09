@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
     private static void SetCameraVariables()
     {
         mainCam = Camera.main;
+        if (mainCam is null) throw new NullReferenceException("No main camera found");
         
         Vector3 lowerCorner = mainCam.ViewportToWorldPoint(new Vector3(0, 0, 0));
         Vector3 upperCorner = mainCam.ViewportToWorldPoint(new Vector3(1, 1, 0));
